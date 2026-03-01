@@ -1,713 +1,798 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Peanut Number Zero & Honeybee</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700&family=Nunito:wght@400;600;700&family=Sacramento&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --rose: #f8c8d8;
-      --blush: #f9dfe8;
-      --honey: #f5c24c;
-      --cream: #fff8f2;
-      --jam: #8a3b5d;
-      --berry: #c75b7c;
-      --ink: #422532;
-      --card: rgba(255, 248, 242, 0.9);
-      --shadow: 0 12px 30px rgba(92, 42, 65, 0.18);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Nunito", sans-serif;
-      color: var(--ink);
-      background: radial-gradient(circle at 15% 20%, #ffe7ef 0%, transparent 40%),
-        radial-gradient(circle at 85% 10%, #fff0c7 0%, transparent 30%),
-        linear-gradient(145deg, #fff8f2 0%, #ffe8f0 55%, #ffe3cc 100%);
-      min-height: 100%;
-      overflow-x: hidden;
-    }
-
-    .bee-bg {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: -1;
-    }
-
-    .bee {
-      position: absolute;
-      font-size: 1.1rem;
-      animation: drift linear infinite;
-      opacity: 0.55;
-    }
-
-    @keyframes drift {
-      from {
-        transform: translateY(110vh) translateX(0) rotate(0deg);
-      }
-      to {
-        transform: translateY(-20vh) translateX(60px) rotate(16deg);
-      }
-    }
-
-    .container {
-      width: min(960px, 92vw);
-      margin: 2.5rem auto 4rem;
-      display: grid;
-      gap: 1rem;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid rgba(138, 59, 93, 0.12);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-      padding: 1.25rem;
-      backdrop-filter: blur(4px);
-    }
-
-    .hero {
-      text-align: center;
-      padding: 2rem 1.25rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    h1 {
-      font-family: "Fraunces", serif;
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      line-height: 1.1;
-      margin: 0.2rem 0;
-      color: #6b2a45;
-    }
-
-    .subtitle {
-      margin: 0.6rem 0 0.4rem;
-      font-size: 1.05rem;
-      color: #7f3f5b;
-    }
-
-    .script {
-      font-family: "Sacramento", cursive;
-      font-size: clamp(2rem, 6vw, 3.5rem);
-      color: #b14572;
-      margin: 0.3rem 0;
-    }
-
-    .visit-pill {
-      display: inline-flex;
-      padding: 0.35rem 0.9rem;
-      border-radius: 999px;
-      background: rgba(245, 194, 76, 0.23);
-      border: 1px solid rgba(138, 59, 93, 0.2);
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #6a3f12;
-    }
-
-    .intro-overlay {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(160deg, rgba(255, 233, 241, 0.98), rgba(255, 245, 225, 0.98));
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 1.2rem;
-      z-index: 8;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
-
-    .intro-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .intro-box {
-      max-width: 560px;
-    }
-
-    .intro-box p {
-      margin: 0.8rem 0;
-      font-size: 1.08rem;
-    }
-
-    .btn {
-      border: none;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--berry), #e58ea9);
-      color: white;
-      font-weight: 700;
-      padding: 0.7rem 1.2rem;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 6px 16px rgba(138, 59, 93, 0.25);
-      font-family: inherit;
-    }
-
-    .btn:hover,
-    .btn:focus-visible {
-      transform: translateY(-2px) scale(1.02);
-      outline: none;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-    }
-
-    h2 {
-      margin: 0.2rem 0 0.8rem;
-      font-family: "Fraunces", serif;
-      font-size: 1.35rem;
-      color: #6b2a45;
-    }
-
-    .memory-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 0.6rem;
-    }
-
-    .memory-btn {
-      width: 100%;
-      text-align: left;
-      border: 1px solid rgba(138, 59, 93, 0.2);
-      border-radius: 14px;
-      padding: 0.7rem;
-      background: rgba(255, 255, 255, 0.65);
-      color: var(--ink);
-      cursor: pointer;
-      font-family: inherit;
-    }
-
-    .memory-btn strong {
-      color: #7a284f;
-    }
-
-    .memory-detail {
-      min-height: 2.2rem;
-      margin-top: 0.7rem;
-      font-size: 0.97rem;
-      color: #683149;
-    }
-
-    .countdown-number {
-      font-size: clamp(1.6rem, 5vw, 2.3rem);
-      font-family: "Fraunces", serif;
-      color: #8f1f56;
-      margin: 0.2rem 0;
-    }
-
-    .pinkie-stage {
-      text-align: center;
-      padding: 0.3rem;
-    }
-
-    .pinkie-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.7rem;
-      min-height: 60px;
-      margin-bottom: 0.6rem;
-      font-size: 2rem;
-    }
-
-    .finger {
-      transition: transform 0.5s ease;
-      display: inline-block;
-    }
-
-    .pinkie-wrap.locked .left {
-      transform: translateX(12px) rotate(-6deg);
-    }
-
-    .pinkie-wrap.locked .right {
-      transform: translateX(-12px) rotate(6deg);
-    }
-
-    .promise-text {
-      min-height: 1.7rem;
-      color: #71314e;
-      font-weight: 700;
-    }
-
-    .dance-room {
-      text-align: center;
-      padding: 0.6rem;
-      border-radius: 16px;
-      background: linear-gradient(145deg, rgba(255, 220, 233, 0.6), rgba(255, 244, 201, 0.6));
-      border: 1px dashed rgba(138, 59, 93, 0.35);
-    }
-
-    .dancers {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      font-size: 2rem;
-      margin: 0.6rem 0;
-    }
-
-    .dancer {
-      display: inline-block;
-    }
-
-    .dance-on .dancer {
-      animation: bedDance 0.7s ease-in-out infinite;
-    }
-
-    @keyframes bedDance {
-      0%,
-      100% { transform: translateY(0) rotate(0deg); }
-      25% { transform: translateY(-4px) rotate(-5deg); }
-      75% { transform: translateY(2px) rotate(5deg); }
-    }
-
-    .hands-zone {
-      text-align: center;
-    }
-
-    .hands-track {
-      position: relative;
-      width: min(320px, 90%);
-      height: 74px;
-      margin: 0.8rem auto;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.8);
-      border: 1px solid rgba(138, 59, 93, 0.18);
-      overflow: hidden;
-    }
-
-    .hand {
-      position: absolute;
-      top: 18px;
-      font-size: 2rem;
-      transition: left 1s cubic-bezier(.19,.95,.4,1), right 1s cubic-bezier(.19,.95,.4,1);
-    }
-
-    .hand.left-hand { left: 10px; }
-    .hand.right-hand { right: 10px; }
-
-    .hands-track.joined .left-hand { left: 108px; }
-    .hands-track.joined .right-hand { right: 108px; }
-
-    .letter {
-      line-height: 1.6;
-      font-size: 1.02rem;
-    }
-
-    .letter p {
-      margin: 0.45rem 0;
-    }
-
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 0.7rem;
-      margin-top: 0.5rem;
-    }
-
-    .photo-slot {
-      background: linear-gradient(135deg, #fff4f8, #fff9ed);
-      border: 1px dashed rgba(138,59,93,0.35);
-      border-radius: 14px;
-      min-height: 120px;
-      padding: 0.6rem;
-      font-size: 0.9rem;
-      color: #74455b;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .photo-slot.filled {
-      background-size: cover;
-      background-position: center;
-      color: transparent;
-      border-style: solid;
-    }
-
-    .upload-row {
-      display: flex;
-      gap: 0.55rem;
-      flex-wrap: wrap;
-      margin-top: 0.8rem;
-    }
-
-    input[type="file"] {
-      font: inherit;
-      max-width: 100%;
-    }
-
-    .tiny {
-      font-size: 0.86rem;
-      color: #754661;
-    }
-
-    .floating-heart {
-      position: fixed;
-      font-size: 1.3rem;
-      pointer-events: none;
-      z-index: 9;
-      animation: floatUp 1.4s ease forwards;
-    }
-
-    @keyframes floatUp {
-      from { transform: translateY(0) scale(0.8); opacity: 0.9; }
-      to { transform: translateY(-70px) scale(1.4); opacity: 0; }
-    }
-  </style>
-</head>
-<body>
-  <div class="bee-bg" id="beeBg"></div>
-
-  <div class="intro-overlay" id="introOverlay" aria-live="polite">
-    <div class="intro-box">
-      <p class="script">For Peanut Number Zero</p>
-      <h1>From your Honeybee, across every distance</h1>
-      <p>This little world is made for the two of you to open together.</p>
-      <button class="btn" id="enterBtn">Open our love letter</button>
-      <p class="tiny">Tap anywhere later for surprise hearts.</p>
-    </div>
-  </div>
-
-  <main class="container" id="app" aria-hidden="true">
-    <section class="card hero">
-      <span class="visit-pill" id="visitPill"></span>
-      <p class="script">Peanut & Honeybee</p>
-      <h1>A soft place where Berlin can hold Burcu close</h1>
-      <p class="subtitle">Long distance, short heartbeats between you two.</p>
-    </section>
-
-    <section class="grid">
-      <article class="card">
-        <h2>Memory Lane</h2>
-        <ul class="memory-list">
-          <li><button class="memory-btn" data-memory="1"><strong>Pinkies linked</strong><br/>Tiny fingers, huge promise.</button></li>
-          <li><button class="memory-btn" data-memory="2"><strong>Bed dance parties</strong><br/>Hands, hips, and sleepy laughter.</button></li>
-          <li><button class="memory-btn" data-memory="3"><strong>Honeybee to Peanut</strong><br/>The names that feel like home.</button></li>
-          <li><button class="memory-btn" data-memory="4"><strong>Berlin to you</strong><br/>Distance never wins.</button></li>
-        </ul>
-        <div class="memory-detail" id="memoryDetail">Tap a memory to reveal it.</div>
-      </article>
-
-      <article class="card">
-        <h2>Countdown</h2>
-        <p class="tiny" id="countLabel">Until Burcu's next birthday (March 4)</p>
-        <p class="countdown-number" id="countdown">...</p>
-        <p id="countDate" class="tiny"></p>
-      </article>
-    </section>
-
-    <section class="grid">
-      <article class="card pinkie-stage">
-        <h2>Pinkie Promise</h2>
-        <div class="pinkie-wrap" id="pinkieWrap">
-          <span class="finger left">🤏</span>
-          <span>✨</span>
-          <span class="finger right">🤏</span>
-        </div>
-        <button class="btn" id="promiseBtn">Lock pinkies</button>
-        <p class="promise-text" id="promiseText">A promise waiting for your touch.</p>
-      </article>
-
-      <article class="card">
-        <h2>Bed Dance Party</h2>
-        <div class="dance-room" id="danceRoom">
-          <p class="tiny">The famous move: slight hands + slight hips + full love.</p>
-          <div class="dancers">
-            <span class="dancer">🛌💃</span>
-            <span class="dancer">🛌🕺</span>
-          </div>
-          <button class="btn" id="danceBtn">Start tiny dance party</button>
-        </div>
-      </article>
-    </section>
-
-    <section class="card hands-zone">
-      <h2>Hand-Holding Simulator</h2>
-      <p class="tiny">Tap to bring your hands together from far away.</p>
-      <div class="hands-track" id="handsTrack">
-        <span class="hand left-hand">🤚</span>
-        <span class="hand right-hand">✋</span>
-      </div>
-      <button class="btn" id="handsBtn">Hold hands now</button>
-      <p class="tiny" id="handsText">Two places. One touch.</p>
-    </section>
-
-    <section class="card letter">
-      <h2>Love Letter</h2>
-      <p>My Peanut Number Zero,</p>
-      <p>
-        Even with cities between us, my heart keeps finding you.
-        Berlin feels warmer whenever I hear your voice.
-      </p>
-      <p>
-        I love how your pinkie fits mine like a tiny secret handshake.
-        I love our ridiculous bed dance parties,
-        where we barely move but somehow celebrate everything.
-      </p>
-      <p>
-        You call me Honeybee, and every time you do,
-        it sounds like a home I can carry anywhere.
-      </p>
-      <p>
-        I will keep choosing you on ordinary days,
-        on hard days, on March 4ths,
-        and on every day in between.
-      </p>
-      <p>Always yours, Honeybee.</p>
-    </section>
-
-    <section class="card">
-      <h2>Photo Corners</h2>
-      <p class="tiny">Add your own moments. They stay on this device.</p>
-      <div class="photo-grid" id="photoGrid">
-        <div class="photo-slot" data-slot="0">First call smile here</div>
-        <div class="photo-slot" data-slot="1">Pinkie moment here</div>
-        <div class="photo-slot" data-slot="2">Dance party memory here</div>
-      </div>
-      <div class="upload-row">
-        <input id="photoInput" type="file" accept="image/*" />
-        <select id="slotSelect" aria-label="Choose photo slot">
-          <option value="0">Slot 1</option>
-          <option value="1">Slot 2</option>
-          <option value="2">Slot 3</option>
-        </select>
-        <button class="btn" id="savePhotoBtn">Save photo</button>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    const state = {
-      danceOn: false,
-      pinkieLocked: false,
-      handsJoined: false,
-    };
-
-    const memoryText = {
-      1: "The pinkie promise says: no matter how many kilometers, love is still hand-in-hand.",
-      2: "Your dance parties prove joy doesn't need space, only each other.",
-      3: "Peanut and Honeybee are more than nicknames. They're your private language of love.",
-      4: "From Berlin to Burcu, every day apart is still a day together in intention.",
-    };
-
-    const introOverlay = document.getElementById("introOverlay");
-    const enterBtn = document.getElementById("enterBtn");
-    const app = document.getElementById("app");
-    const visitPill = document.getElementById("visitPill");
-    const memoryDetail = document.getElementById("memoryDetail");
-    const danceBtn = document.getElementById("danceBtn");
-    const danceRoom = document.getElementById("danceRoom");
-    const promiseBtn = document.getElementById("promiseBtn");
-    const promiseText = document.getElementById("promiseText");
-    const pinkieWrap = document.getElementById("pinkieWrap");
-    const handsBtn = document.getElementById("handsBtn");
-    const handsTrack = document.getElementById("handsTrack");
-    const handsText = document.getElementById("handsText");
-    const countdownEl = document.getElementById("countdown");
-    const countDateEl = document.getElementById("countDate");
-    const photoInput = document.getElementById("photoInput");
-    const slotSelect = document.getElementById("slotSelect");
-    const savePhotoBtn = document.getElementById("savePhotoBtn");
-
-    function setupBees() {
-      const beeBg = document.getElementById("beeBg");
-      for (let i = 0; i < 14; i += 1) {
-        const bee = document.createElement("span");
-        bee.className = "bee";
-        bee.textContent = "🐝";
-        bee.style.left = `${Math.random() * 100}%`;
-        bee.style.animationDuration = `${10 + Math.random() * 12}s`;
-        bee.style.animationDelay = `${Math.random() * 8}s`;
-        beeBg.appendChild(bee);
-      }
-    }
-
-    function renderVisits() {
-      const visits = Number(localStorage.getItem("peanutVisits") || 0) + 1;
-      localStorage.setItem("peanutVisits", String(visits));
-      const lastOpened = localStorage.getItem("peanutLastOpened");
-      const now = new Date();
-      localStorage.setItem("peanutLastOpened", now.toISOString());
-
-      const first = visits === 1 ? "First visit together 💗" : `Visit #${visits}`;
-      const last = lastOpened ? `Last opened: ${new Date(lastOpened).toLocaleString()}` : "Freshly opened with love";
-      visitPill.textContent = `${first} • ${last}`;
-    }
-
-    function updateCountdown() {
-      const now = new Date();
-      let year = now.getFullYear();
-      let target = new Date(year, 2, 4, 0, 0, 0, 0);
-      if (now > target) {
-        target = new Date(year + 1, 2, 4, 0, 0, 0, 0);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peanut Number Zero & Honeybee</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700&family=Nunito:wght@400;600;700&family=Sacramento&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --rose: #f8c8d8;
+        --blush: #f9dfe8;
+        --honey: #f5c24c;
+        --cream: #fff8f2;
+        --jam: #8a3b5d;
+        --berry: #c75b7c;
+        --ink: #422532;
+        --card: rgba(255, 248, 242, 0.9);
+        --shadow: 0 12px 30px rgba(92, 42, 65, 0.18);
       }
 
-      const ms = target - now;
-      const totalDays = Math.ceil(ms / (1000 * 60 * 60 * 24));
-      const hrs = Math.floor((ms / (1000 * 60 * 60)) % 24);
-      const mins = Math.floor((ms / (1000 * 60)) % 60);
-
-      countdownEl.textContent = `${totalDays} days, ${hrs}h ${mins}m`;
-      countDateEl.textContent = `Target date: ${target.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}`;
-    }
-
-    function launchHearts(x, y, count = 1) {
-      for (let i = 0; i < count; i += 1) {
-        const heart = document.createElement("span");
-        heart.className = "floating-heart";
-        heart.textContent = Math.random() > 0.5 ? "💖" : "💕";
-        heart.style.left = `${x + (Math.random() * 30 - 15)}px`;
-        heart.style.top = `${y + (Math.random() * 20 - 10)}px`;
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 1400);
+      * {
+        box-sizing: border-box;
       }
-    }
 
-    document.querySelectorAll(".memory-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const id = btn.dataset.memory;
-        memoryDetail.textContent = memoryText[id];
-        localStorage.setItem("peanutLastMemory", id);
-      });
-    });
-
-    function restoreMemory() {
-      const id = localStorage.getItem("peanutLastMemory");
-      if (id && memoryText[id]) {
-        memoryDetail.textContent = memoryText[id];
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Nunito", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 15% 20%, #ffe7ef 0%, transparent 40%),
+          radial-gradient(circle at 85% 10%, #fff0c7 0%, transparent 30%),
+          linear-gradient(145deg, #fff8f2 0%, #ffe8f0 55%, #ffe3cc 100%);
+        min-height: 100%;
+        overflow-x: hidden;
       }
-    }
 
-    promiseBtn.addEventListener("click", () => {
-      state.pinkieLocked = !state.pinkieLocked;
-      pinkieWrap.classList.toggle("locked", state.pinkieLocked);
-      promiseText.textContent = state.pinkieLocked
-        ? "Pinkie promise sealed: Honeybee and Peanut, always us."
-        : "Promise unlocked, ready to seal again.";
-      promiseBtn.textContent = state.pinkieLocked ? "Unlock pinkies" : "Lock pinkies";
-      localStorage.setItem("peanutPinkieLocked", String(state.pinkieLocked));
-    });
-
-    function restorePinkie() {
-      const locked = localStorage.getItem("peanutPinkieLocked") === "true";
-      if (locked) {
-        state.pinkieLocked = true;
-        pinkieWrap.classList.add("locked");
-        promiseText.textContent = "Pinkie promise sealed: Honeybee and Peanut, always us.";
-        promiseBtn.textContent = "Unlock pinkies";
+      .bee-bg {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: -1;
       }
-    }
 
-    danceBtn.addEventListener("click", () => {
-      state.danceOn = !state.danceOn;
-      danceRoom.classList.toggle("dance-on", state.danceOn);
-      danceBtn.textContent = state.danceOn ? "Pause tiny dance party" : "Start tiny dance party";
-      localStorage.setItem("peanutDanceOn", String(state.danceOn));
-      const rect = danceBtn.getBoundingClientRect();
-      launchHearts(rect.left + rect.width / 2, rect.top, 6);
-    });
-
-    function restoreDance() {
-      const on = localStorage.getItem("peanutDanceOn") === "true";
-      if (on) {
-        state.danceOn = true;
-        danceRoom.classList.add("dance-on");
-        danceBtn.textContent = "Pause tiny dance party";
+      .bee {
+        position: absolute;
+        font-size: 1.1rem;
+        animation: drift linear infinite;
+        opacity: 0.55;
       }
-    }
 
-    handsBtn.addEventListener("click", () => {
-      state.handsJoined = !state.handsJoined;
-      handsTrack.classList.toggle("joined", state.handsJoined);
-      handsBtn.textContent = state.handsJoined ? "Release hands" : "Hold hands now";
-      handsText.textContent = state.handsJoined
-        ? "Hands found each other, just like you do."
-        : "Two places. One touch.";
-      localStorage.setItem("peanutHandsJoined", String(state.handsJoined));
-    });
-
-    function restoreHands() {
-      const joined = localStorage.getItem("peanutHandsJoined") === "true";
-      if (joined) {
-        state.handsJoined = true;
-        handsTrack.classList.add("joined");
-        handsBtn.textContent = "Release hands";
-        handsText.textContent = "Hands found each other, just like you do.";
-      }
-    }
-
-    savePhotoBtn.addEventListener("click", () => {
-      const file = photoInput.files && photoInput.files[0];
-      if (!file) {
-        return;
-      }
-      const slot = slotSelect.value;
-      const reader = new FileReader();
-      reader.onload = () => {
-        localStorage.setItem(`peanutPhoto${slot}`, String(reader.result));
-        renderPhotos();
-      };
-      reader.readAsDataURL(file);
-    });
-
-    function renderPhotos() {
-      document.querySelectorAll(".photo-slot").forEach((slotEl) => {
-        const idx = slotEl.dataset.slot;
-        const photo = localStorage.getItem(`peanutPhoto${idx}`);
-        if (photo) {
-          slotEl.classList.add("filled");
-          slotEl.style.backgroundImage = `url('${photo}')`;
-          slotEl.textContent = "";
+      @keyframes drift {
+        from {
+          transform: translateY(110vh) translateX(0) rotate(0deg);
         }
-      });
-    }
-
-    function openSite() {
-      introOverlay.classList.add("hidden");
-      app.setAttribute("aria-hidden", "false");
-      localStorage.setItem("peanutIntroSeen", "true");
-    }
-
-    enterBtn.addEventListener("click", openSite);
-
-    if (localStorage.getItem("peanutIntroSeen") === "true") {
-      openSite();
-    }
-
-    document.addEventListener("click", (event) => {
-      if (!introOverlay.classList.contains("hidden")) {
-        return;
+        to {
+          transform: translateY(-20vh) translateX(60px) rotate(16deg);
+        }
       }
-      launchHearts(event.clientX, event.clientY, 2);
-    });
 
-    setupBees();
-    renderVisits();
-    restoreMemory();
-    restorePinkie();
-    restoreDance();
-    restoreHands();
-    renderPhotos();
-    updateCountdown();
-    setInterval(updateCountdown, 60000);
-  </script>
-</body>
+      .container {
+        width: min(960px, 92vw);
+        margin: 2.5rem auto 4rem;
+        display: grid;
+        gap: 1rem;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid rgba(138, 59, 93, 0.12);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        padding: 1.25rem;
+        backdrop-filter: blur(4px);
+      }
+
+      .hero {
+        text-align: center;
+        padding: 2rem 1.25rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      h1 {
+        font-family: "Fraunces", serif;
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        line-height: 1.1;
+        margin: 0.2rem 0;
+        color: #6b2a45;
+      }
+
+      .subtitle {
+        margin: 0.6rem 0 0.4rem;
+        font-size: 1.05rem;
+        color: #7f3f5b;
+      }
+
+      .script {
+        font-family: "Sacramento", cursive;
+        font-size: clamp(2rem, 6vw, 3.5rem);
+        color: #b14572;
+        margin: 0.3rem 0;
+      }
+
+      .visit-pill {
+        display: inline-flex;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(245, 194, 76, 0.23);
+        border: 1px solid rgba(138, 59, 93, 0.2);
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #6a3f12;
+      }
+
+      .intro-overlay {
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(
+          160deg,
+          rgba(255, 233, 241, 0.98),
+          rgba(255, 245, 225, 0.98)
+        );
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 1.2rem;
+        z-index: 8;
+        transition:
+          opacity 0.8s ease,
+          visibility 0.8s ease;
+      }
+
+      .intro-overlay.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .intro-box {
+        max-width: 560px;
+      }
+
+      .intro-box p {
+        margin: 0.8rem 0;
+        font-size: 1.08rem;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--berry), #e58ea9);
+        color: white;
+        font-weight: 700;
+        padding: 0.7rem 1.2rem;
+        cursor: pointer;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+        box-shadow: 0 6px 16px rgba(138, 59, 93, 0.25);
+        font-family: inherit;
+      }
+
+      .btn:hover,
+      .btn:focus-visible {
+        transform: translateY(-2px) scale(1.02);
+        outline: none;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+
+      h2 {
+        margin: 0.2rem 0 0.8rem;
+        font-family: "Fraunces", serif;
+        font-size: 1.35rem;
+        color: #6b2a45;
+      }
+
+      .memory-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.6rem;
+      }
+
+      .memory-btn {
+        width: 100%;
+        text-align: left;
+        border: 1px solid rgba(138, 59, 93, 0.2);
+        border-radius: 14px;
+        padding: 0.7rem;
+        background: rgba(255, 255, 255, 0.65);
+        color: var(--ink);
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+      .memory-btn strong {
+        color: #7a284f;
+      }
+
+      .memory-detail {
+        min-height: 2.2rem;
+        margin-top: 0.7rem;
+        font-size: 0.97rem;
+        color: #683149;
+      }
+
+      .countdown-number {
+        font-size: clamp(1.6rem, 5vw, 2.3rem);
+        font-family: "Fraunces", serif;
+        color: #8f1f56;
+        margin: 0.2rem 0;
+      }
+
+      .pinkie-stage {
+        text-align: center;
+        padding: 0.3rem;
+      }
+
+      .pinkie-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.7rem;
+        min-height: 60px;
+        margin-bottom: 0.6rem;
+        font-size: 2rem;
+      }
+
+      .finger {
+        transition: transform 0.5s ease;
+        display: inline-block;
+      }
+
+      .pinkie-wrap.locked .left {
+        transform: translateX(12px) rotate(-6deg);
+      }
+
+      .pinkie-wrap.locked .right {
+        transform: translateX(-12px) rotate(6deg);
+      }
+
+      .promise-text {
+        min-height: 1.7rem;
+        color: #71314e;
+        font-weight: 700;
+      }
+
+      .dance-room {
+        text-align: center;
+        padding: 0.6rem;
+        border-radius: 16px;
+        background: linear-gradient(
+          145deg,
+          rgba(255, 220, 233, 0.6),
+          rgba(255, 244, 201, 0.6)
+        );
+        border: 1px dashed rgba(138, 59, 93, 0.35);
+      }
+
+      .dancers {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        font-size: 2rem;
+        margin: 0.6rem 0;
+      }
+
+      .dancer {
+        display: inline-block;
+      }
+
+      .dance-on .dancer {
+        animation: bedDance 0.7s ease-in-out infinite;
+      }
+
+      @keyframes bedDance {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        25% {
+          transform: translateY(-4px) rotate(-5deg);
+        }
+        75% {
+          transform: translateY(2px) rotate(5deg);
+        }
+      }
+
+      .hands-zone {
+        text-align: center;
+      }
+
+      .hands-track {
+        position: relative;
+        width: min(320px, 90%);
+        height: 74px;
+        margin: 0.8rem auto;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(138, 59, 93, 0.18);
+        overflow: hidden;
+      }
+
+      .hand {
+        position: absolute;
+        top: 18px;
+        font-size: 2rem;
+        transition:
+          left 1s cubic-bezier(0.19, 0.95, 0.4, 1),
+          right 1s cubic-bezier(0.19, 0.95, 0.4, 1);
+      }
+
+      .hand.left-hand {
+        left: 10px;
+      }
+      .hand.right-hand {
+        right: 10px;
+      }
+
+      .hands-track.joined .left-hand {
+        left: 108px;
+      }
+      .hands-track.joined .right-hand {
+        right: 108px;
+      }
+
+      .letter {
+        line-height: 1.6;
+        font-size: 1.02rem;
+      }
+
+      .letter p {
+        margin: 0.45rem 0;
+      }
+
+      .photo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 0.7rem;
+        margin-top: 0.5rem;
+      }
+
+      .photo-slot {
+        background: linear-gradient(135deg, #fff4f8, #fff9ed);
+        border: 1px dashed rgba(138, 59, 93, 0.35);
+        border-radius: 14px;
+        min-height: 120px;
+        padding: 0.6rem;
+        font-size: 0.9rem;
+        color: #74455b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .photo-slot.filled {
+        background-size: cover;
+        background-position: center;
+        color: transparent;
+        border-style: solid;
+      }
+
+      .upload-row {
+        display: flex;
+        gap: 0.55rem;
+        flex-wrap: wrap;
+        margin-top: 0.8rem;
+      }
+
+      input[type="file"] {
+        font: inherit;
+        max-width: 100%;
+      }
+
+      .tiny {
+        font-size: 0.86rem;
+        color: #754661;
+      }
+
+      .floating-heart {
+        position: fixed;
+        font-size: 1.3rem;
+        pointer-events: none;
+        z-index: 9;
+        animation: floatUp 1.4s ease forwards;
+      }
+
+      @keyframes floatUp {
+        from {
+          transform: translateY(0) scale(0.8);
+          opacity: 0.9;
+        }
+        to {
+          transform: translateY(-70px) scale(1.4);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bee-bg" id="beeBg"></div>
+
+    <div class="intro-overlay" id="introOverlay" aria-live="polite">
+      <div class="intro-box">
+        <p class="script">For Peanut Number Zero</p>
+        <h1>From your Honeybee,</h1>
+        <p>This little world is made for cozy stuff</p>
+        <button class="btn" id="enterBtn">Open our love letter</button>
+        <p class="tiny">(Tap anywhere later for surprise hearts.)</p>
+      </div>
+    </div>
+
+    <main class="container" id="app" aria-hidden="true">
+      <section class="card hero">
+        <span class="visit-pill" id="visitPill"></span>
+        <p class="script">Peanut & Honeybee</p>
+        <h1>A soft place</h1>
+        <p class="subtitle">Heartbeats between you two.</p>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Memory Lane</h2>
+          <ul class="memory-list">
+            <li>
+              <button class="memory-btn" data-memory="1">
+                <strong>Pinkies linked</strong><br />Tiny fingers, huge promise.
+              </button>
+            </li>
+            <li>
+              <button class="memory-btn" data-memory="2">
+                <strong>Bed dance parties</strong><br />Hands, hips, and sleepy
+                laughter. Partying while lyong in bed. All you need basically.
+              </button>
+            </li>
+            <li>
+              <button class="memory-btn" data-memory="3">
+                <strong>Honeybee and Peanut</strong><br />The names that feel
+                like home.
+              </button>
+            </li>
+            <li>
+              <button class="memory-btn" data-memory="4">
+                <strong>Oh bye...</strong><br />Click to reveal...
+              </button>
+            </li>
+          </ul>
+          <div class="memory-detail" id="memoryDetail">
+            Tap a memory to reveal it.
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Countdown</h2>
+          <p class="tiny" id="countLabel">
+            Until Burcu's next birthday (March 4)
+          </p>
+          <p class="countdown-number" id="countdown">...</p>
+          <p id="countDate" class="tiny"></p>
+        </article>
+      </section>
+
+      <section class="grid">
+        <article class="card pinkie-stage">
+          <h2>Nano Handshake</h2>
+          <div class="pinkie-wrap" id="pinkieWrap">
+            <span class="finger left">🤏</span>
+            <span>✨</span>
+            <span class="finger right">🤏</span>
+          </div>
+          <button class="btn" id="promiseBtn">Engage handshake</button>
+          <p class="promise-text" id="promiseText">
+            A small handshake is always better than a big, fat one.
+          </p>
+        </article>
+
+        <article class="card">
+          <h2>Bed Dance Party</h2>
+          <div class="dance-room" id="danceRoom">
+            <p class="tiny">
+              The famous move: slight hands + slight hips + full love.
+            </p>
+            <div class="dancers">
+              <span class="dancer">🛌💃</span>
+              <span class="dancer">🛌🕺</span>
+            </div>
+            <button class="btn" id="danceBtn">Start tiny dance party</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="card hands-zone">
+        <h2>Cheek Engage Simulator</h2>
+        <p class="tiny">Tap to bring your cheeks together.</p>
+        <div class="hands-track" id="handsTrack">
+          <span class="hand left-hand">🧔🏻</span>
+          <span class="hand right-hand">👩🏻</span>
+        </div>
+        <button class="btn" id="handsBtn">Engage cheeks now</button>
+        <p class="tiny" id="handsText">Two people. One touch.</p>
+      </section>
+
+      <section class="card letter">
+        <h2>Love Letter</h2>
+        <p>Dear Peanut Number Zero,</p>
+        <p>
+          Repporting from the digital worlds. I created this little space
+          together with Clawdio, my calwbot. We wish you a happy birthday and
+          many more to come, filled with love, laughter, and tiny dance parties.
+          This is a place to celebrate the beautiful connection you share with
+          your Honeybee, a cozy corner of the internet just for you two.
+        </p>
+        <p>Always yours,</p>
+        <p>NINJA Honeybee.</p>
+      </section>
+
+      <section class="card">
+        <h2>Photo Corners</h2>
+        <p class="tiny">Add your own moments. They stay on this device.</p>
+        <div class="photo-grid" id="photoGrid">
+          <div class="photo-slot" data-slot="0">
+            Peace and love posing here ✌️
+          </div>
+          <div class="photo-slot" data-slot="1">Pinkie moment here</div>
+          <div class="photo-slot" data-slot="2">Dance party memory here</div>
+          <div class="photo-slot" data-slot="3">Cheek engage memory here</div>
+          <div class="photo-slot" data-slot="4">Sweet selfie moment here</div>
+          <div class="photo-slot" data-slot="5">Tiny date memory here</div>
+          <div class="photo-slot" data-slot="6">Favorite smile here</div>
+          <div class="photo-slot" data-slot="7">Honeybee and Peanut here</div>
+          <div class="photo-slot" data-slot="8">Road trip moment here</div>
+          <div class="photo-slot" data-slot="9">Cozy bed dance snap here</div>
+          <div class="photo-slot" data-slot="10">Birthday sparkle here</div>
+          <div class="photo-slot" data-slot="11">In nature 🌳</div>
+          <div class="photo-slot" data-slot="12">Sunset memory here</div>
+          <div class="photo-slot" data-slot="13">Goofy laughter here</div>
+          <div class="photo-slot" data-slot="14">In nature II 🌊</div>
+        </div>
+        <div class="upload-row">
+          <input id="photoInput" type="file" accept="image/*" />
+          <select id="slotSelect" aria-label="Choose photo slot">
+            <option value="0">Slot 1</option>
+            <option value="1">Slot 2</option>
+            <option value="2">Slot 3</option>
+            <option value="3">Slot 4</option>
+            <option value="4">Slot 5</option>
+            <option value="5">Slot 6</option>
+            <option value="6">Slot 7</option>
+            <option value="7">Slot 8</option>
+            <option value="8">Slot 9</option>
+            <option value="9">Slot 10</option>
+            <option value="10">Slot 11</option>
+            <option value="11">Slot 12</option>
+            <option value="12">Slot 13</option>
+            <option value="13">Slot 14</option>
+            <option value="14">Slot 15</option>
+          </select>
+          <button class="btn" id="savePhotoBtn">Save photo</button>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const state = {
+        danceOn: false,
+        pinkieLocked: false,
+        handsJoined: false,
+      };
+
+      const memoryText = {
+        1: "Holding pinkies is like holding hands, but better. A tiny, perfect fit that says 'I've got you' without words.",
+        2: "Dance parties prove joy doesn't need space, only each other.",
+        3: "Peanut and Honeybee are more than nicknames. They're your private language of love.",
+        4: "JUST KIDDING!!!",
+      };
+
+      const introOverlay = document.getElementById("introOverlay");
+      const enterBtn = document.getElementById("enterBtn");
+      const app = document.getElementById("app");
+      const visitPill = document.getElementById("visitPill");
+      const memoryDetail = document.getElementById("memoryDetail");
+      const danceBtn = document.getElementById("danceBtn");
+      const danceRoom = document.getElementById("danceRoom");
+      const promiseBtn = document.getElementById("promiseBtn");
+      const promiseText = document.getElementById("promiseText");
+      const pinkieWrap = document.getElementById("pinkieWrap");
+      const handsBtn = document.getElementById("handsBtn");
+      const handsTrack = document.getElementById("handsTrack");
+      const handsText = document.getElementById("handsText");
+      const countdownEl = document.getElementById("countdown");
+      const countDateEl = document.getElementById("countDate");
+      const photoInput = document.getElementById("photoInput");
+      const slotSelect = document.getElementById("slotSelect");
+      const savePhotoBtn = document.getElementById("savePhotoBtn");
+
+      function setupBees() {
+        const beeBg = document.getElementById("beeBg");
+        for (let i = 0; i < 14; i += 1) {
+          const bee = document.createElement("span");
+          bee.className = "bee";
+          bee.textContent = "🐝";
+          bee.style.left = `${Math.random() * 100}%`;
+          bee.style.animationDuration = `${10 + Math.random() * 12}s`;
+          bee.style.animationDelay = `${Math.random() * 8}s`;
+          beeBg.appendChild(bee);
+        }
+      }
+
+      function renderVisits() {
+        const visits = Number(localStorage.getItem("peanutVisits") || 0) + 1;
+        localStorage.setItem("peanutVisits", String(visits));
+        const lastOpened = localStorage.getItem("peanutLastOpened");
+        const now = new Date();
+        localStorage.setItem("peanutLastOpened", now.toISOString());
+
+        const first =
+          visits === 1 ? "First visit together 💗" : `Visit #${visits}`;
+        const last = lastOpened
+          ? `Last opened: ${new Date(lastOpened).toLocaleString()}`
+          : "Freshly opened with love";
+        visitPill.textContent = `${first} • ${last}`;
+      }
+
+      function updateCountdown() {
+        const now = new Date();
+        let year = now.getFullYear();
+        let target = new Date(year, 2, 4, 0, 0, 0, 0);
+        if (now > target) {
+          target = new Date(year + 1, 2, 4, 0, 0, 0, 0);
+        }
+
+        const ms = target - now;
+        const totalDays = Math.ceil(ms / (1000 * 60 * 60 * 24));
+        const hrs = Math.floor((ms / (1000 * 60 * 60)) % 24);
+        const mins = Math.floor((ms / (1000 * 60)) % 60);
+
+        countdownEl.textContent = `${totalDays} days, ${hrs}h ${mins}m`;
+        countDateEl.textContent = `Target date: ${target.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" })}`;
+      }
+
+      function launchHearts(x, y, count = 1) {
+        for (let i = 0; i < count; i += 1) {
+          const heart = document.createElement("span");
+          heart.className = "floating-heart";
+          heart.textContent = Math.random() > 0.5 ? "💖" : "💕";
+          heart.style.left = `${x + (Math.random() * 30 - 15)}px`;
+          heart.style.top = `${y + (Math.random() * 20 - 10)}px`;
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 1400);
+        }
+      }
+
+      document.querySelectorAll(".memory-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.memory;
+          memoryDetail.textContent = memoryText[id];
+          localStorage.setItem("peanutLastMemory", id);
+        });
+      });
+
+      function restoreMemory() {
+        const id = localStorage.getItem("peanutLastMemory");
+        if (id && memoryText[id]) {
+          memoryDetail.textContent = memoryText[id];
+        }
+      }
+
+      promiseBtn.addEventListener("click", () => {
+        state.pinkieLocked = !state.pinkieLocked;
+        pinkieWrap.classList.toggle("locked", state.pinkieLocked);
+        promiseText.textContent = state.pinkieLocked
+          ? "Nano handshake sealed: Honeybee and Peanut, always us."
+          : "Handshake unlocked, ready to seal again.";
+        promiseBtn.textContent = state.pinkieLocked
+          ? "Disengage handshake"
+          : "Engage hanshake";
+        localStorage.setItem("peanutPinkieLocked", String(state.pinkieLocked));
+      });
+
+      function restorePinkie() {
+        const locked = localStorage.getItem("peanutPinkieLocked") === "true";
+        if (locked) {
+          state.pinkieLocked = true;
+          pinkieWrap.classList.add("locked");
+          promiseText.textContent =
+            "Pinkie promise sealed: Honeybee and Peanut, always us.";
+          promiseBtn.textContent = "Unlock pinkies";
+        }
+      }
+
+      danceBtn.addEventListener("click", () => {
+        state.danceOn = !state.danceOn;
+        danceRoom.classList.toggle("dance-on", state.danceOn);
+        danceBtn.textContent = state.danceOn
+          ? "Pause tiny dance party"
+          : "Start tiny dance party";
+        localStorage.setItem("peanutDanceOn", String(state.danceOn));
+        const rect = danceBtn.getBoundingClientRect();
+        launchHearts(rect.left + rect.width / 2, rect.top, 6);
+      });
+
+      function restoreDance() {
+        const on = localStorage.getItem("peanutDanceOn") === "true";
+        if (on) {
+          state.danceOn = true;
+          danceRoom.classList.add("dance-on");
+          danceBtn.textContent = "Pause tiny dance party";
+        }
+      }
+
+      handsBtn.addEventListener("click", () => {
+        state.handsJoined = !state.handsJoined;
+        handsTrack.classList.toggle("joined", state.handsJoined);
+        handsBtn.textContent = state.handsJoined
+          ? "Release hands"
+          : "Hold hands now";
+        handsText.textContent = state.handsJoined
+          ? "Hands found each other, just like you do."
+          : "Two places. One touch.";
+        localStorage.setItem("peanutHandsJoined", String(state.handsJoined));
+      });
+
+      function restoreHands() {
+        const joined = localStorage.getItem("peanutHandsJoined") === "true";
+        if (joined) {
+          state.handsJoined = true;
+          handsTrack.classList.add("joined");
+          handsBtn.textContent = "Release hands";
+          handsText.textContent = "Hands found each other, just like you do.";
+        }
+      }
+
+      savePhotoBtn.addEventListener("click", () => {
+        const file = photoInput.files && photoInput.files[0];
+        if (!file) {
+          return;
+        }
+        const slot = slotSelect.value;
+        const reader = new FileReader();
+        reader.onload = () => {
+          localStorage.setItem(`peanutPhoto${slot}`, String(reader.result));
+          renderPhotos();
+        };
+        reader.readAsDataURL(file);
+      });
+
+      function renderPhotos() {
+        document.querySelectorAll(".photo-slot").forEach((slotEl) => {
+          const idx = slotEl.dataset.slot;
+          const photo = localStorage.getItem(`peanutPhoto${idx}`);
+          if (photo) {
+            slotEl.classList.add("filled");
+            slotEl.style.backgroundImage = `url('${photo}')`;
+            slotEl.textContent = "";
+          }
+        });
+      }
+
+      function openSite() {
+        introOverlay.classList.add("hidden");
+        app.setAttribute("aria-hidden", "false");
+      }
+
+      enterBtn.addEventListener("click", openSite);
+
+      document.addEventListener("click", (event) => {
+        if (!introOverlay.classList.contains("hidden")) {
+          return;
+        }
+        launchHearts(event.clientX, event.clientY, 2);
+      });
+
+      setupBees();
+      renderVisits();
+      restoreMemory();
+      restorePinkie();
+      restoreDance();
+      restoreHands();
+      renderPhotos();
+      updateCountdown();
+      setInterval(updateCountdown, 60000);
+    </script>
+  </body>
 </html>
