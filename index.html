@@ -244,8 +244,12 @@
         display: inline-block;
       }
 
+      .finger.left {
+        transform: rotate(180deg);
+      }
+
       .pinkie-wrap.locked .left {
-        transform: translateX(12px) rotate(-6deg);
+        transform: translateX(12px) rotate(174deg);
       }
 
       .pinkie-wrap.locked .right {
@@ -331,10 +335,10 @@
       }
 
       .hands-track.joined .left-hand {
-        left: 108px;
+        left: 125px;
       }
       .hands-track.joined .right-hand {
-        right: 108px;
+        right: 125px;
       }
 
       .letter {
@@ -515,14 +519,13 @@
       </section>
 
       <section class="card letter">
-        <h2>Love Letter</h2>
-        <p>Dear Peanut Number Zero,</p>
+        <h2>Dear Peanut Number Zero,</h2>
         <p>
-          Repporting from the digital worlds. I created this little space
-          together with Clawdio, my calwbot. We wish you a happy birthday and
-          many more to come, filled with love, laughter, and tiny dance parties.
-          This is a place to celebrate the beautiful connection you share with
-          your Honeybee, a cozy corner of the internet just for you two.
+          I created this little space together with Clawdio, my calwbot. We wish
+          you a happy birthday and many more to come, filled with love,
+          laughter, and tiny dance parties. This is a place to celebrate the
+          beautiful connection you share with your Honeybee, a cozy corner of
+          the internet just for you two.
         </p>
         <p>Always yours,</p>
         <p>NINJA Honeybee.</p>
@@ -726,10 +729,10 @@
         state.handsJoined = !state.handsJoined;
         handsTrack.classList.toggle("joined", state.handsJoined);
         handsBtn.textContent = state.handsJoined
-          ? "Release hands"
-          : "Hold hands now";
+          ? "Release cheeks"
+          : "Engage cheeks now";
         handsText.textContent = state.handsJoined
-          ? "Hands found each other, just like you do."
+          ? "Cheeks found each other!"
           : "Two places. One touch.";
         localStorage.setItem("peanutHandsJoined", String(state.handsJoined));
       });
@@ -739,8 +742,8 @@
         if (joined) {
           state.handsJoined = true;
           handsTrack.classList.add("joined");
-          handsBtn.textContent = "Release hands";
-          handsText.textContent = "Hands found each other, just like you do.";
+          handsBtn.textContent = "Release cheeks";
+          handsText.textContent = "Cheeks found each other!";
         }
       }
 
